@@ -1,0 +1,27 @@
+{
+  "template": "https://github.com/linkml/linkml-project-cookiecutter",
+  "commit": "b2da87eb7835bfec748a76823d098cac85e8363a",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "linkml-learning",
+      "__project_slug": "linkml_learning",
+      "github_org": "my-org",
+      "__source_path": "src/linkml_learning/schema/linkml_learning.yaml",
+      "project_description": "Just for learning ourpose",
+      "full_name": "Rajavi Shah",
+      "email": "shah.raja@northeastern.edu",
+      "__author": "Rajavi Shah <shah.raja@northeastern.edu>",
+      "license": "MIT",
+      "main_schema_class": "no",
+      "create_python_classes": "No",
+      "use_schemasheets": "No",
+      "google_sheet_id": "1wVoaiFg47aT9YWNeRfTZ8tYHN8s8PAuDx5i2HUcDpvQ",
+      "google_sheet_tabs": "personinfo enums",
+      "__google_sheet_module": "personinfo_enums",
+      "github_token_for_pypi_deployment": "PYPI_PASSWORD",
+      "_template": "https://github.com/linkml/linkml-project-cookiecutter"
+    }
+  },
+  "directory": null
+}
