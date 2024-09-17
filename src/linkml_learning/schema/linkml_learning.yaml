@@ -3,7 +3,7 @@ id: https://w3id.org/my-org/linkml-learning
 name: linkml-learning
 title: linkml-learning
 description: |-
-  Just for learning ourpose
+  Just for learning purpose
 license: MIT
 see_also:
   - https://my-org.github.io/linkml-learning
@@ -11,10 +11,10 @@ see_also:
 prefixes:
   linkml_learning: https://w3id.org/my-org/linkml-learning/
   linkml: https://w3id.org/linkml/
-  biolink: https://w3id.org/biolink/
+  biolink: https://w3id.org/biolink/vocab/
   schema: http://schema.org/
   PATO: http://purl.obolibrary.org/obo/PATO_
-  example: https://example.org/
+  example: http://www.example.org/rdf#
 default_prefix: linkml_learning
 default_range: string
 
@@ -22,75 +22,289 @@ imports:
   - linkml:types
 
 classes:
-
-  NamedThing:
-    description: >-
-      A generic grouping for any identifiable entity
+  Option:
     slots:
-      - id
+      - label
+      - value
+
+  Container: 
+    slots:
+      - parameters
+      - display_only
+      - results
+      - exec_function
+      - docker_image
+      - folder_name
+      - citations
+      - hidden_args
+      - algorithm
+
+  AbstractDisplay:
+    aliases: ["parameters", "display_only", "results"]
+    description: "A class to represent abstract display"
+    abstract: true
+    slots:
+      - name
+      - type 
+      - label
+      - description
+      - default
+      - cli_tag
+      - optional
+      - section_id
+      - mode
+      - file_count
+      - interactive
+      - append_value
+      # - folder_name
+      - output_dir_set
+      - options
+    # rules:
+    #   - preconditions:
+    #       slot_conditions:
+    #         type:
+    #           any_of:
+    #             - equals_string: checkbox         
+    #     postconditions:
+    #       defining_slots:
+    #         - append_value
+    #     slot_usage:
+    #       append_value:
+    #         range: boolean
+    #         required: false
+      
+  Parameters:
+    aliases: ["parameters"]
+    description: "A class to represent files"
+    is_a: AbstractDisplay
+    slots:
+      - cli_order
+
+  DisplayOnly:
+    aliases: ["display_only"]
+    description: "A class to represent display only"
+    is_a: AbstractDisplay
+    # slot_usage:
+    #   cli_tag:
+    #    range: null
+
+  Results:
+    aliases: ["results"]
+    description: "A class to represent results"
+    is_a: AbstractDisplay
+    slots:
+      
+  ExecFunction:
+    aliases: ["exec_function", "generate_cli_command", "construct_cli_command"]
+    description: "Description of the exec_function"
+    slots:
+      - name
+      - script
+      - module
+      - cli_command
+      - hidden_args
+
+  DockerImage:
+    aliases: ["docker-image", "docker_image"]
+    description: "Description of the docker-image"
+    slots:
+      - org
+      - name
+      - tag
+
+  FolderName:
+    description: "Algorithm's Folder-name"
+
+  Citations:
+    description: "Citations for the Algorithm"
+    slots:
+      - algorithm
+
+  HiddenArgs:
+    description: "Hidden Arguments for the Algorithm"
+    subclass_of: Results
+    slots:
+      - cli_tag
+      - value
+      - append_value
+      - cli_order
+
+  Algorithm:
+    description: "Algorithm's Citation"
+    subclass_of: Citations
+    slots:
       - name
       - description
-    class_uri: schema:Thing
+      - doi
 
-  no:
-    is_a: NamedThing
-    description: >-
-      Represents a no
-    slots:
-      - primary_email
-      - birth_date
-      - age_in_years
-      - vital_status
-    slot_usage:
-      primary_email:
-        pattern: "^\\S+@[\\S+\\.]+\\S+"
 
-  noCollection:
-    tree_root: true
-    description: >-
-      A holder for no objects
-    attributes:
-      entries:
-        range: no
-        multivalued: true
-        inlined: true
-
+ 
 slots:
-  id:
-    identifier: true
-    slot_uri: schema:identifier
-    range: uriorcurie
-    description: A unique identifier for a thing
+  exec_function:
+    description: "Function to execute the Algorithm"
+    range: ExecFunction
+  docker_image:
+    description: "Docker Image of the Algorithm"
+    range: DockerImage
+  # folder_name:
+  #   description: "Folder name of the Algorithm"
+  #   range: FolderName
+  citations:
+    description: "Citations for the Algorithm"
+    range: Citations
+  # hidden_args:
+  #   description: "Hidden Arguments for the Algorithm"
+  #   range: HiddenArgs
+  # algorithm:
+  #   description: "Algorithm's Citation"
+  #   range: Algorithm
+  label:
+    description: "Label of the object"
+    required: true
+    any_of:
+      - range: string
+      - range: integer
+      - range: boolean
+  value:
+    description: "Value of the object"
+    required: true
+    any_of:
+      - range: string
+      - range: integer
+      - range: boolean
+  parameters:
+    description: "Parameters of the Algorithm"
+    range: TParameters
+    multivalued: true
+    inlined_as_list: true # Container --> parameter slots ---> Parameters' Instances | if u dont have identifiers 
+  display_only:
+    description: "Display only of the Algorithm"
+    range: DisplayOnly
+    multivalued: true
+    inlined_as_list: true
+  results:
+    description: "Results of the Algorithm"
+    range: Results
+    multivalued: true
+    inlined_as_list: true
   name:
-    slot_uri: schema:name
-    description: A human-readable name for a thing
+    description: "Name of the paramter/argument"
+    required: true
+    range: string
+  type:
+    description: "Type of the object"
+    required: true
+    range: TypeEnum
   description:
-    slot_uri: schema:description
-    description: A human-readable description for a thing
-  primary_email:
-    slot_uri: schema:email
-    description: The main email address of a person
-  birth_date:
-    slot_uri: schema:birthDate
-    range: date
-    description: Date on which a person is born
-  age_in_years:
+    description: "Description of the object"
+    required: true
+    range: string
+  default:
+    description: "Default value of the object"
+    required: true
+    range: string
+    # any_of:
+    #   - range: string
+    #   - range: integer
+    #   - range: boolean
+  cli_tag:
+    description: "CLI tag of the object"
+    required: true
+  optional:
+    description: "Optional value of the object"
+    required: true
+    range: boolean
+  section_id:
+    description: "Section ID of the object"
+    required: true
+    range: string
+  mode:
+    description: "Mode of the object"
+    required: true
+    range: ModeEnum
+  cli_order:
+    description: "CLI order of the object"
+    required: false
     range: integer
-    description: Number of years since birth
-  vital_status:
-    range: PersonStatus
-    description: living or dead status
+  script:
+    description: "Script of the Algorithm"
+    required: true
+  module:
+    description: "Module of the Algorithm"
+    required: true
+    range: string
+  cli_command:
+    description: "CLI command of the Algorithm"
+    required: true
+    range: string
+  hidden_args:
+    description: "Hidden arguments of the Algorithm"
+    required: false
+    range: HiddenArgs
+  org:
+    description: "Organization of the Docker Image"
+    required: true
+    range: string
+  tag:
+    description: "Tag of the Docker Image"
+    required: true
+    range: string
+  algorithm:
+    description: "Respective Algorithm's Citation details"
+    required: true
+    range: Algorithm
+  append_value:
+    description: "Append value of the object"
+    required: false
+    range: boolean
+  doi:
+    description: "DOI of the Algorithm"
+    required: true
+    range: string
+  interactive:
+    description: "Should the GUI widget be interactive"
+    required: false
+    range: boolean
+  file_count:
+    description: "Number of files"
+    required: false
+    range: string
+  folder_name:
+    description: "Folder name of the Algorithm"
+    required: false
+    range: string
+  output_dir_set:
+    description: "Output directory set"
+    required: false
+    range: boolean
+  options:
+    description: "Options of the object"
+    required: false
+    range: Option
+    multivalued: true
 
 enums:
-  PersonStatus:
+  TypeEnum:
+    description: "Enumeration of possible types"
     permissible_values:
-      ALIVE:
-        description: the person is living
-        meaning: PATO:0001421
-      DEAD:
-        description: the person is deceased
-        meaning: PATO:0001422
-      UNKNOWN:
-        description: the vital status is not known
-        todos:
-          - map this to an ontology
+      "integer":
+      "float":
+      "checkbox":
+      "dropdown":
+      "radio":
+      "textbox":
+      "files":
+  ModeEnum:
+    description: "Enumeration of possible modes"
+    permissible_values:
+      beginner:
+      advanced:
+  DefaultEnum:
+    description: "Enumeration of possible defaults"
+    permissible_values:
+      True:
+      False:
+      string:
+  
+
+

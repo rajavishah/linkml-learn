@@ -4,7 +4,7 @@ Playing around with LinkML Stuff to check whether it's a good choice to use for 
 =======
 # linkml-learning
 
-Just for learning ourpose
+Just for learning purpose
 
 ## Website
 

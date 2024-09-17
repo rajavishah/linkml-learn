@@ -1,3 +1,3 @@
 # linkml-learning
 
-Just for learning ourpose
+Just for learning purpose
