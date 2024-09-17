@@ -54,10 +54,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-<<<<<<< HEAD
 cover/
-=======
->>>>>>> 369e3b0 (chore: make setup was run)
 
 # Translations
 *.mo

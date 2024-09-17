@@ -396,22 +396,22 @@ exec_function:
   script: "cellpose_inference"
   module: "Algorithms.cellpose_inference"
   cli_command: "python -m cellpose --verbose"
-  hidden_args: 
-    # dummy example
-    - cli_tag: "--save_png"
-      value: "True"
-      append_value: False
-      cli_order: 3
+  # hidden_args: 
+  #   # dummy example
+  #   - cli_tag: "--save_png"
+  #     value: "True"
+  #     append_value: False
+  #     cli_order: 3
 
-docker-image:
+docker_image:
   org: cellprofiler
   name: runcellpose_no_pretrained
-  tag: 0.1
+  tag: "0.1"
 
-folder_name: "cellpose_inference"
+# folder_name: "cellpose_inference"
 
-citations:
-  Algorithm: 
-    - name: "Cellpose"
-      doi: 10.1038/s41592-020-01018-x
-      description: "Deep Learning algorithm for cell segmentation in microscopy images"
+# citations:
+#   Algorithm: 
+#     - name: "Cellpose"
+#       doi: 10.1038/s41592-020-01018-x
+#       description: "Deep Learning algorithm for cell segmentation in microscopy images"

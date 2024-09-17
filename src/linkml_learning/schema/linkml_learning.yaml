@@ -33,11 +33,10 @@ classes:
       - display_only
       - results
       - exec_function
-      - docker_image
       - folder_name
       - citations
-      - hidden_args
       - algorithm
+      - docker_image
 
   AbstractDisplay:
     aliases: ["parameters", "display_only", "results"]
@@ -48,7 +47,6 @@ classes:
       - type 
       - label
       - description
-      - default
       - cli_tag
       - optional
       - section_id
@@ -56,7 +54,7 @@ classes:
       - file_count
       - interactive
       - append_value
-      # - folder_name
+      - folder_name
       - output_dir_set
       - options
     # rules:
@@ -73,20 +71,20 @@ classes:
     #         range: boolean
     #         required: false
       
-  Parameters:
+  TParameters:
     aliases: ["parameters"]
     description: "A class to represent files"
     is_a: AbstractDisplay
     slots:
+      - default
       - cli_order
 
   DisplayOnly:
     aliases: ["display_only"]
     description: "A class to represent display only"
     is_a: AbstractDisplay
-    # slot_usage:
-    #   cli_tag:
-    #    range: null
+    slots:
+      - default
 
   Results:
     aliases: ["results"]
@@ -112,24 +110,23 @@ classes:
       - name
       - tag
 
-  FolderName:
-    description: "Algorithm's Folder-name"
+  # FolderName:
+  #   description: "Algorithm's Folder-name"
 
-  Citations:
+  TCitations:
     description: "Citations for the Algorithm"
     slots:
       - algorithm
 
   HiddenArgs:
     description: "Hidden Arguments for the Algorithm"
-    subclass_of: Results
     slots:
       - cli_tag
       - value
       - append_value
       - cli_order
 
-  Algorithm:
+  TAlgorithm:
     description: "Algorithm's Citation"
     subclass_of: Citations
     slots:
@@ -146,18 +143,10 @@ slots:
   docker_image:
     description: "Docker Image of the Algorithm"
     range: DockerImage
-  # folder_name:
-  #   description: "Folder name of the Algorithm"
-  #   range: FolderName
   citations:
     description: "Citations for the Algorithm"
-    range: Citations
-  # hidden_args:
-  #   description: "Hidden Arguments for the Algorithm"
-  #   range: HiddenArgs
-  # algorithm:
-  #   description: "Algorithm's Citation"
-  #   range: Algorithm
+    range: TCitations
+    multivalued: true
   label:
     description: "Label of the object"
     required: true
@@ -251,8 +240,9 @@ slots:
     range: string
   algorithm:
     description: "Respective Algorithm's Citation details"
-    required: true
-    range: Algorithm
+    required: false
+    range: TAlgorithm
+    multivalued: true
   append_value:
     description: "Append value of the object"
     required: false
@@ -287,13 +277,13 @@ enums:
   TypeEnum:
     description: "Enumeration of possible types"
     permissible_values:
-      "integer":
-      "float":
-      "checkbox":
-      "dropdown":
-      "radio":
-      "textbox":
-      "files":
+      integer:
+      float:
+      checkbox:
+      dropdown:
+      radio:
+      textbox:
+      files:
   ModeEnum:
     description: "Enumeration of possible modes"
     permissible_values:
